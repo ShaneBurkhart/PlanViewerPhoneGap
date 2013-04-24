@@ -10,7 +10,7 @@ app.PagesView = Backbone.View.extend({
     },
 
     events : {
-		
+		"click div.item" : "openFile"
 	},
 
 	navigateToJobDir : function(e){

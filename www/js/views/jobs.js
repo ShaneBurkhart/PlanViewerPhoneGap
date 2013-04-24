@@ -10,7 +10,13 @@ app.JobsView = Backbone.View.extend({
     },
 
     events : {
+    	"click .sync" : "confirm",
 		"click div.item" : "navigateToJobDir"
+	},
+
+	confirm : function(e){
+		e.preventDefault();
+		app.Dialog.confirm();
 	},
 
 	navigateToJobDir : function(e){

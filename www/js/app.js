@@ -9,11 +9,22 @@ Backbone.View.prototype.close = function(){
 
 app = _.extend(app, {collections : {}});
 
-app.showLoading = function(){
-	$("#loading-container").show();
-};
-app.hideLoading = function(){
-	$("#loading-container").hide();
+app.Dialog = {
+	showLoading : function(){
+		$("#loading-container").show();
+	},
+
+	hideLoading : function(){
+		$("#loading-container").hide();
+	},
+
+	confirm : function(){
+		navigator.notification.confirm("This is a test.", function(){}, "Title", "Done");
+	},
+
+	alert : function(){
+		navigator.notification.alert("This is a test.", function(){}, "Title", "Done");
+	}
 };
 
 new app.Router(app);
