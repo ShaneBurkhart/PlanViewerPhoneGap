@@ -2,7 +2,7 @@ var app = app || {};
 
 app.RegionManager = {
 
-	el : "#page-container",
+	el : "body",
 
 	show : function(view){
 		if(this.current)
