@@ -45,13 +45,19 @@ app.File = {
 		this.getDir(this.jobDir, success);
 	},
 
+	createJob : function(job, success){
+		this.getJobDir(function(dir){
+			dir.getDirectory(job, {create: true, exclusive: false}, success, this.fileError);
+		});
+	},
+
 	getJobs : function(success){
 		this.getJobDir(function(folder){
 			folder.createReader().readEntries(function(entries){
 				var i, 
 				jobs = [];				
 			    for (i = 0 ; i < entries.length ; i++) {
-			        if(entries[i].isFile())
+			        if(entries[i].isDirectory())
 			        	jobs.push(entries[i]);
 			    }
 			    success(jobs);
@@ -68,5 +74,13 @@ document.addEventListener("deviceready", function(){
 	app.Templates.load();
 	new app.Router(app);
 	Backbone.history.start();
-	app.File.getJobs(function(jobs){app.Dialog.alert("Got jobs");});
+	var suc = function(){
+			app.File.getJobs(function(jobs){
+			var s = "", i;
+			for(i = 0 ; i < jobs.length ; i ++)
+				s += jobs.name;
+			app.Dialog.alert("Got jobs:\n" + s);
+		});
+	};
+	app.File.createJob("TestJob", suc);
 }, false);
