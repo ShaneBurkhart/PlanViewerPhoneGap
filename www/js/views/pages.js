@@ -7,6 +7,7 @@ app.PagesView = Backbone.View.extend({
 	template : "list_item",
 
 	initialize : function(){
+		this.renderAll();
     },
 
     events : {
@@ -23,9 +24,13 @@ app.PagesView = Backbone.View.extend({
 		app.File.open(this.options.job, id);
 	},
 
-	render : function(){
+	renderAll : function(){
 		var body = Mustache.to_html(app.Templates.get(this.template), {items : [{title : "Cover"}, {title : "Elevation"}]});
-		this.$el.html(Mustache.render(app.Templates.get(this.container), {content : body}));
+		$(".content").append(body);
+	},
+
+	render : function(){
+		this.$el.html(Mustache.render(app.Templates.get(this.container), {content : ""}));
 		return this;
 	}
 });

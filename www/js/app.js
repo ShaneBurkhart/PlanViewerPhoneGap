@@ -54,10 +54,10 @@ app.File = {
 	getJobs : function(success){
 		this.getJobDir(function(folder){
 			folder.createReader().readEntries(function(entries){
-				var i, 
+				var i = 0, 
 				jobs = [];				
-			    for (i = 0 ; i < entries.length ; i++) {
-			        if(entries[i].isDirectory())
+			    for (i = 0 ; i < entries.length ; i ++) {
+			        if(entries[i].isDirectory)
 			        	jobs.push(entries[i]);
 			    }
 			    success(jobs);
