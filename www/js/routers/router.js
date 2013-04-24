@@ -17,6 +17,6 @@ app.Router = Backbone.Router.extend({
 
 	showPages : function(job){
 		console.log(job);
-		this.RM.show(new app.PagesView());
+		this.RM.show(new app.PagesView({job : job}));
 	}
 });

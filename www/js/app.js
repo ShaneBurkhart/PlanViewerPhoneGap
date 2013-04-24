@@ -22,8 +22,14 @@ app.Dialog = {
 		navigator.notification.confirm("Are you sure you want to update your files?", function(){}, "Update Files?", ["Update", "Cancel"]);
 	},
 
-	alert : function(){
-		navigator.notification.alert("This is a test.", function(){}, "Title", "Done");
+	alert : function(message, callback, title, buttons){
+		navigator.notification.alert(message, callback, title, buttons);
+	}
+};
+
+app.File = {
+	open : function(job, fid){
+		app.Dialog.alert(job + " " + fid, function(){}, "openFile");
 	}
 };
 

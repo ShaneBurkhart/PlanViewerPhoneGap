@@ -1,5 +1,7 @@
 var app = app || {};
 
+navigator.notification.alert("loading");
+
 app.Templates = (function(){
 	var tempNames = ["page_container", "list_item"],
 	baseUrl = "js/templates/",

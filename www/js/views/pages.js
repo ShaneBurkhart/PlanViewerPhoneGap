@@ -13,13 +13,14 @@ app.PagesView = Backbone.View.extend({
 		"click div.item" : "openFile"
 	},
 
-	navigateToJobDir : function(e){
+	openFile : function(e){
 		e.preventDefault();
 		var target = $(e.target);
 		while(target.prop("tagName") != "DIV")
 			target =  target.parent();
 		var val = target.find("p").html();
-		window.location.hash = "#" + val;
+		var id = target.attr("id");
+		app.File.open(this.options.job, id);
 	},
 
 	render : function(){
