@@ -37,7 +37,7 @@ app.File = {
             console.log("Root = " + fs.root.fullPath);
             fs.root.getDirectory(dir, {create: true, exclusive: false}, success, fail);
 		}, function (error) {
-			alert(error.code);
+			app.Dialog.alert(error.code);
 		});
 	}
 };
@@ -46,5 +46,5 @@ document.addEventListener("deviceready", function(){
 	app.Templates.load();
 	new app.Router(app);
 	Backbone.history.start();
-	app.File.mkdir("Test");
+	app.File.mkdir("Test", function(){app.Dialog.alert("created");}, function(){app.Dialog.alert("failed");});
 }, false);
