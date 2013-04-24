@@ -30,6 +30,7 @@ app.PagesView = Backbone.View.extend({
 	},
 
 	render : function(){
+		
 		this.$el.html(Mustache.render(app.Templates.get(this.container), {content : ""}));
 		return this;
 	}

@@ -7,7 +7,6 @@ app.JobsView = Backbone.View.extend({
 	template : "list_item",
 
 	initialize : function(){
-		app.File.getJobs(this.renderAll);
     },
 
     events : {
@@ -30,12 +29,18 @@ app.JobsView = Backbone.View.extend({
 	},
 
 	renderAll : function(jobs){
-		var body = Mustache.to_html(app.Templates.get(this.template), {items : [{title : "Cover"}, {title : "Elevation"}]});
-		$(".content").append(body);
+		var i = 0,
+			items = [];
+		for(i = 0 ; i < jobs.length ; i ++)
+			items.push({title : jobs[i]});
+		var body = Mustache.to_html(app.Templates.get(this.template), {items : items});
+		this.$el.find("#content").append(body);
 	},
 
 	render : function(){
 		this.$el.html(Mustache.render(app.Templates.get(this.container), {content : ""}));
+		var self = this;
+		app.File.getJobs(self.renderAll);
 		return this;
 	}
 });
