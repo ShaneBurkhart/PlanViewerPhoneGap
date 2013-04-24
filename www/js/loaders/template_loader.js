@@ -1,7 +1,7 @@
 var app = app || {};
 
 app.Templates = (function(){
-	var tempNames = ["page_container"],
+	var tempNames = ["page_container", "list_item"],
 	baseUrl = "js/templates/",
 	extension = ".mustache",
 	temps = {};

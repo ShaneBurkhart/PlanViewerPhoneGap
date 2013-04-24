@@ -1,0 +1,11 @@
+.item:active {
+	background-color: #eee;
+}	
+.item {
+	padding: 10px;
+	border-bottom: thin solid #ccc;
+}
+
+.no-margin {
+	margin:0;
+}
