@@ -74,7 +74,7 @@ document.addEventListener("deviceready", function(){
 	app.Templates.load();
 	new app.Router(app);
 	Backbone.history.start();
-	app.File.getJobDir(function(folder){
-		app.Dialog.alert(folder.fullPath);
+	app.File.getJobs(function(jobs){
+		app.Dialog.alert(jobs.join());
 	});
 }, false);
