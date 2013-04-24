@@ -10,6 +10,6 @@ app.Router = Backbone.Router.extend({
 	},
 
 	showJob : function(){
-		this.RM.show(new app.JobView());
+		this.RM.show(new app.PageContainerView());
 	}
 });

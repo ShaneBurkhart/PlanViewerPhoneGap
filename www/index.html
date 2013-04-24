@@ -4,23 +4,28 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link href="css/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <title>Plan Viewer</title>
     </head>
     <body>
-
+        <!-- Libs !-->
         <script type="text/javascript" src="js/libs/jquery.min.js"></script>
         <script type="text/javascript" src="js/libs/underscore-min.js"></script>
         <script type="text/javascript" src="js/libs/backbone-min.js"></script>
-        <script type="text/javascript" src="phonegap.js"></script>
+        <script type="text/javascript" src="js/libs/mustache.js"></script>
+        <!--<script type="text/javascript" src="phonegap.js"></script>!-->
         
         <!-- Backbone.js stuff !-->
+        <!-- Template Loader. (Synchronous)!-->
+        <script type="text/javascript" src="js/loaders/template_loader.js"></script>
 
         <!--Views !-->
+        <script type="text/javascript" src="js/views/page_container.js"></script>
         <script type="text/javascript" src="js/views/job.js"></script>        
 
         <!-- Includes !-->
-        <script type="text/javascript" src="js/region-manager.js"></script>
+        <script type="text/javascript" src="js/region_manager.js"></script>
         <script type="text/javascript" src="js/routers/router.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
     </body>
