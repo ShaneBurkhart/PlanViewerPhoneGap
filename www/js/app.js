@@ -76,10 +76,10 @@ document.addEventListener("deviceready", function(){
 	Backbone.history.start();
 	app.File.createJob("TestJob", function(){
 		app.File.getJobs(function(jobs){
-			var s = "", i = 0;
+			/*var s = "", i = 0;
 			for(i = 0 ; i < jobs.length ; i ++)
-				s += jobs[i].name;
-			app.Dialog.alert("Got jobs:\n" + s);
+				s += jobs[i].name;*/
+			app.Dialog.alert("Got jobs:");
 		});
 	});
 }, false);
