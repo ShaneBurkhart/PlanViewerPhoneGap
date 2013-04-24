@@ -30,6 +30,15 @@ app.Dialog = {
 app.File = {
 	open : function(job, fid){
 		app.Dialog.alert(job + " " + fid, function(){}, "openFile");
+	},
+
+	mkdir : function(dir, success, fail){ 
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+            console.log("Root = " + fs.root.fullPath);
+            fs.root.getDirectory(dir, {create: true, exclusive: false}, success, fail);
+		}, function (error) {
+			alert(error.code);
+		});
 	}
 };
 
@@ -37,4 +46,5 @@ document.addEventListener("deviceready", function(){
 	app.Templates.load();
 	new app.Router(app);
 	Backbone.history.start();
+	app.File.mkdir("Test");
 }, false);
