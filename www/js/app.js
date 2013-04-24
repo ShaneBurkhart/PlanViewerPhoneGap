@@ -34,6 +34,7 @@ app.File = {
 };
 
 document.addEventListener("deviceready", function(){
+	app.Templates.load();
 	new app.Router(app);
 	Backbone.history.start();
 }, false);

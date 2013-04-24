@@ -24,8 +24,8 @@ app.PagesView = Backbone.View.extend({
 	},
 
 	render : function(){
-		var body = Mustache.to_html(app.Templates[this.template], {items : [{title : "Cover"}, {title : "Elevation"}]});
-		this.$el.html(Mustache.render(app.Templates[this.container], {body : body}));
+		var body = Mustache.to_html(app.Templates.get(this.template), {items : [{title : "Cover"}, {title : "Elevation"}]});
+		this.$el.html(Mustache.render(app.Templates.get(this.container), {body : body}));
 		return this;
 	}
 });
