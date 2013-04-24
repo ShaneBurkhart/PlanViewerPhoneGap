@@ -74,5 +74,12 @@ document.addEventListener("deviceready", function(){
 	app.Templates.load();
 	new app.Router(app);
 	Backbone.history.start();
-	app.File.getJobs(function(){app.Dialog.alert("Got Jobs");});
+	app.File.createJob("Test Job", function(){
+		app.File.getJobs(function(jobs){
+			var s = "";
+			for(i = 0 ; i < jobs.length ; i ++)
+				s += jobs[i].name + "\n";
+			app.Dialog.alert("Got Jobs: \n" + s);
+		});
+	});
 }, false);
