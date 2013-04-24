@@ -2,8 +2,9 @@
 	background-color: #eee;
 }	
 .item {
-	padding: 10px;
+	padding: 20px;
 	border-bottom: thin solid #ccc;
+	font-size: 1.7em;
 }
 
 .no-margin {

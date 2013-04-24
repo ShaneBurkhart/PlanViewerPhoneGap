@@ -19,7 +19,7 @@ app.Dialog = {
 	},
 
 	confirm : function(){
-		navigator.notification.confirm("This is a test.", function(){}, "Title", "Done");
+		navigator.notification.confirm("Are you sure you want to update your files?", function(){}, "Update Files?", ["Update", "Cancel"]);
 	},
 
 	alert : function(){
