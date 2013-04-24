@@ -52,7 +52,9 @@ app.File = {
 	},
 
 	getJobs : function(success){
-		this.getJobDir(function(folder){
+		var jobs = ["First", "Second"];
+		setTimeout(function(){success(jobs);}, 1000);
+		/*this.getJobDir(function(folder){
 			folder.createReader().readEntries(function(entries){
 				var i = 0, 
 				jobs = [];				
@@ -62,7 +64,7 @@ app.File = {
 			    }
 			    success(jobs);
 			}, this.fileError);
-		});
+		});*/
 	},
 
 	fileError : function(error){

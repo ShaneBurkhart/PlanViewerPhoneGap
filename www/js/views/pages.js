@@ -24,14 +24,19 @@ app.PagesView = Backbone.View.extend({
 		app.File.open(this.options.job, id);
 	},
 
-	renderAll : function(){
-		var body = Mustache.to_html(app.Templates.get(this.template), {items : [{title : "Cover"}, {title : "Elevation"}]});
-		$(".content").append(body);
+	renderAll : function(files){
+		var i = 0,
+			items = [];
+		for(i = 0 ; i < files.length ; i ++)
+			items.push({title : files[i]});
+		var body = Mustache.to_html(app.Templates.get(this.template), {items : items});
+		this.$el.find("#content").append(body);
 	},
 
 	render : function(){
-		
 		this.$el.html(Mustache.render(app.Templates.get(this.container), {content : ""}));
+		var self = this;
+		//app.File.getJobs(self.renderAll);
 		return this;
 	}
 });

@@ -7,6 +7,7 @@ app.JobsView = Backbone.View.extend({
 	template : "list_item",
 
 	initialize : function(){
+		_.bindAll(this, "renderAll");
     },
 
     events : {
