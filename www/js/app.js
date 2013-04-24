@@ -37,12 +37,26 @@ app.File = {
 	getDir : function(dir, success){ 
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
             console.log("Root = " + fs.root.fullPath);
-            fs.root.getDirectory(dir, {create: true, exclusive: false}, success, fileError);
-		}, fileError);
+            fs.root.getDirectory(dir, {create: true, exclusive: false}, success, this.fileError);
+		}, this.fileError);
 	},
 
 	getJobDir : function(success){
 		this.getDir(this.jobDir, success);
+	},
+
+	getJobs : function(success){
+		this.getJobDir(function(folder){
+			folder.createReader().readEntries(function(entries){
+				var i, 
+				jobs = [];				
+			    for (i = 0 ; i < entries.length ; i++) {
+			        if(entries[i].isFile())
+			        	jobs.push(entries[i]);
+			    }
+			    success(jobs);
+			}, this.fileError);
+		});
 	},
 
 	fileError : function(error){
@@ -54,5 +68,5 @@ document.addEventListener("deviceready", function(){
 	app.Templates.load();
 	new app.Router(app);
 	Backbone.history.start();
-	app.File.getJobDir(function(fs){app.Dialog.alert(fs);});
+	app.File.getJobs(function(jobs){app.Dialog.alert("Got jobs");});
 }, false);
