@@ -82,5 +82,5 @@ document.addEventListener("deviceready", function(){
 			app.Dialog.alert("Got jobs:\n" + s);
 		});
 	};
-	app.File.createJob("TestJob", suc);
+	app.File.createJob("TestJob", function(){app.Dialog.alert("Created Job");});
 }, false);
