@@ -1,6 +1,6 @@
 var app = app || {};
 
-app.JobsView = Backbone.View.extend({
+app.PagesView = Backbone.View.extend({
 	tagName : "div",
 	className : "page",
 	container : "page_container",
