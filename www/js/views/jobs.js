@@ -30,7 +30,7 @@ app.JobsView = Backbone.View.extend({
 
 	render : function(){
 		var body = Mustache.to_html(app.Templates.get(this.template), {items : [{title : "None"}, {title : "Text"}]});
-		this.$el.html(Mustache.render(app.Templates.get(this.container), {body : body}));
+		this.$el.html(Mustache.render(app.Templates.get(this.container), {content : body}));
 		return this;
 	}
 });
