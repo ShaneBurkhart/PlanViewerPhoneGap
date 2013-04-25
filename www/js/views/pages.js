@@ -7,7 +7,7 @@ app.PagesView = Backbone.View.extend({
 	template : "list_item",
 
 	initialize : function(){
-		this.renderAll();
+		_.bindAll(this, "renderAll");
     },
 
     events : {

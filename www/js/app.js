@@ -45,16 +45,14 @@ app.File = {
 		this.getDir(this.jobDir, success);
 	},
 
-	createJob : function(job, success){
+	getJob : function(job, success){
 		this.getJobDir(function(dir){
 			dir.getDirectory(job, {create: true, exclusive: false}, success, this.fileError);
 		});
 	},
 
 	getJobs : function(success){
-		var jobs = ["First", "Second"];
-		setTimeout(function(){success(jobs);}, 1000);
-		/*this.getJobDir(function(folder){
+		this.getJobDir(function(folder){
 			folder.createReader().readEntries(function(entries){
 				var i = 0, 
 				jobs = [];				
@@ -64,7 +62,24 @@ app.File = {
 			    }
 			    success(jobs);
 			}, this.fileError);
-		});*/
+		});
+	},
+
+	getFiles : function(job, success){
+		this.getJob(job, function(folder){
+			folder.createReader().readEntries(function(entries){
+				var i = 0, files = [];
+				for(i = 0 ; i < entries.length ; i ++){
+					if(entries[i].isFile)
+						files.push(entries[i].name);
+				}
+				success(files);
+			}, this.fileError);
+		});
+	},
+
+	createFile : function(){
+
 	},
 
 	fileError : function(error){
@@ -72,8 +87,42 @@ app.File = {
 	}
 };
 
+app.Sync = {
+	hasConnection : function(){
+		var type = navigator.connection.type;
+		return type != Connection.NONE && type != Connection.UNKNOWN;
+	},
+
+	getData : function(username, password, success){
+		if(this.hasConnection()){
+			this.noConnectionError();
+			return;
+		}
+		$.ajax({
+			url : "http://theplanviewer.com/api/mobile",
+			type : "POST",
+			data : {username : username, password : password},
+			dataType : "json",
+			success : success,
+			error : this.syncError
+		});
+	},
+
+	syncError : function(error){
+		console.log("Fail");
+		app.Dialog.alert("Sorry but the server is not responding\n" + error.code);
+	},
+
+	noConnectionError : function(){
+		app.Dialog.alert("Sorry but you don't currently have connection.");
+	}
+};
+
 document.addEventListener("deviceready", function(){
-	app.Templates.load();
+	/*app.Templates.load();
 	new app.Router(app);
-	Backbone.history.start();
+	Backbone.history.start();*/
+	app.Sync.getData("Shane", "kFj5agh4", function(data){
+		app.Dialog.alert(data);
+	});
 }, false);
