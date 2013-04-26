@@ -15,7 +15,8 @@ app.CredentialsView = Backbone.View.extend({
 
 	update : function(e){
 		e.preventDefault();
-		
+		var username = $("#username"),
+			password = $("#password");
 	},
 
 	render : function(){

@@ -3,8 +3,8 @@ var app = app || {};
 app.Router = Backbone.Router.extend({	
 	routes :{
 		"" : "showJobs",
-		":job" : "showPages",
-		"credentials" : "showCredentials"
+		"credentials" : "showCredentials",
+		":job" : "showPages"
 	},
 
 	initialize : function(app){
