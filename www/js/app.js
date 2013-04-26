@@ -118,12 +118,11 @@ app.Sync = {
 			callback = function(){
 				i++;
 				if(i < d.length)
-					app.getJob(d[i].name, callback);
+					app.getJob(data[i].name, callback);
 				else
 					success();
 			};
-		app.Dialog.alert(data);
-		app.getJob(d[i].name, callback);
+		app.getJob(data[i].name, callback);
 	},
 
 	syncError : function(error){
