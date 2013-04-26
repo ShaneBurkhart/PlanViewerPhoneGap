@@ -114,14 +114,14 @@ app.Sync = {
 	},
 
 	noConnectionError : function(){
-		app.Dialog.alert("Sorry but you don't currently have connection.");
+		app.Dialog.alert("Sorry but you don't currently have connection." + navigator.connection.type);
 	}
 };
 
 document.addEventListener("deviceready", function(){
 	/*app.Templates.load();
 	new app.Router(app);
-	Backbone.history.start();/*/
+	Backbone.history.start();*/
 	app.Sync.getData("Shane", "kFj5agh4", function(data){
 		app.Dialog.alert(data);
 	});
