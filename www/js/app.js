@@ -113,6 +113,19 @@ app.Sync = {
 		});
 	},
 
+	update : function(data, success){
+		var d = JSON.parse(data),
+			i = 0,
+			callback = function(){
+				i++;
+				if(i < d.length)
+					app.getJob(d[i].name, callback);
+				else
+					success();
+			};
+		app.getJob(d[i].name, callback);
+	},
+
 	syncError : function(error){
 		console.log("Fail");
 		app.Dialog.alert("Sorry but the server is not responding\n" + error.code);

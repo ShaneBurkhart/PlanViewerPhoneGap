@@ -21,10 +21,15 @@ app.CredentialsView = Backbone.View.extend({
 			loading = $("#loading"),
 			u = "Shane",
 			p = "kFj5agh4";
+		password.val("");
 		form.hide();
 		loading.show();
 		app.Sync.getData(u, p, function(data){
-			app.Dialog.alert(data);
+			if(!data)
+				return;
+			app.Sync.update(data, function(){
+				window.location.hash = "";
+			});
 		});
 	},
 
