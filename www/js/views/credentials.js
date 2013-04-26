@@ -25,8 +25,11 @@ app.CredentialsView = Backbone.View.extend({
 		form.hide();
 		loading.show();
 		app.Sync.getData(u, p, function(data){
-			if(!data)
+			if(!data){
+				app.Dialog.alert("No Data");
 				return;
+			}
+			app.Dialog.alert("test");
 			app.Sync.update(data, function(){
 				app.Dialog.alert("Finished");
 			});
