@@ -123,6 +123,7 @@ app.Sync = {
 				else
 					success();
 			};
+		app.Dialog.alert(d.length);
 		app.getJob(d[i].name, callback);
 	},
 
