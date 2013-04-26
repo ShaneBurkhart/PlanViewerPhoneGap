@@ -15,7 +15,7 @@ app.CredentialsView = Backbone.View.extend({
 
 	update : function(e){
 		e.preventDefault();
-
+		
 	},
 
 	render : function(){
