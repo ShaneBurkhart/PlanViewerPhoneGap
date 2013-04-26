@@ -94,7 +94,7 @@ app.Sync = {
 	},
 
 	getData : function(username, password, success){
-		if(this.hasConnection()){
+		if(!this.hasConnection()){
 			this.noConnectionError();
 			return;
 		}
@@ -114,7 +114,7 @@ app.Sync = {
 	},
 
 	noConnectionError : function(){
-		app.Dialog.alert("Sorry but you don't currently have connection." + navigator.connection.type);
+		app.Dialog.alert("Sorry but you don't currently have connection.");
 	}
 };
 
