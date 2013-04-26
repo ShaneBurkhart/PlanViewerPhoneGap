@@ -16,7 +16,19 @@ app.CredentialsView = Backbone.View.extend({
 	update : function(e){
 		e.preventDefault();
 		var username = $("#username"),
-			password = $("#password");
+			password = $("#password"),
+			form = $("#credential-form"),
+			loading = $("#loading"),
+			u = "Shane",
+			p = "kFj5agh4";
+		form.hide();
+		loading.show();
+		app.Sync.getData(u, p, function(data){
+			if(data)
+				console.log(data);
+			else
+				app.Dialog.alert("Username or password is incorrect.");
+		});
 	},
 
 	render : function(){
