@@ -122,7 +122,7 @@ app.Sync = {
 				else
 					success();
 			};*/
-		app.getJob(data[i].name, function(){});
+		app.getJob(data[i].name, function(){success();});
 	},
 
 	syncError : function(error){
