@@ -117,7 +117,7 @@ app.Sync = {
 		var i = 0,
 			callback = function(){
 				i++;
-				if(i < d.length)
+				if(i < data.length)
 					app.getJob(data[i].name, callback);
 				else
 					success();
