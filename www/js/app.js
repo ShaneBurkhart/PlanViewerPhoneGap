@@ -88,6 +88,7 @@ app.File = {
 };
 
 app.Sync = {
+	bound : 0,
 	hasConnection : function(){
 		var type = navigator.connection.type;
 		return type != Connection.NONE && type != Connection.UNKNOWN;
@@ -97,6 +98,10 @@ app.Sync = {
 		if(!this.hasConnection()){
 			this.noConnectionError();
 			return;
+		}
+		if(!this.bound){
+			_.bindAll(this, "syncError");
+			this.bound = 1;
 		}
 		$.ajax({
 			url : "http://theplanviewer.com/api/mobile",
