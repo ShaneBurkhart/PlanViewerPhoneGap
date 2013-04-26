@@ -95,10 +95,10 @@ app.Sync = {
 	},
 
 	getData : function(username, password, success){
-		if(!this.hasConnection()){
+		/*if(!this.hasConnection()){
 			this.noConnectionError();
 			return;
-		}
+		}*/
 		if(!this.bound){
 			_.bindAll(this, "syncError");
 			this.bound = 1;
@@ -114,15 +114,15 @@ app.Sync = {
 	},
 
 	update : function(data, success){
-		var i = 0,
+		var i = 0;/*,
 			callback = function(){
 				i++;
 				if(i < data.length)
 					app.getJob(data[i].name, callback);
 				else
 					success();
-			};
-		app.getJob(data[i].name, callback);
+			};*/
+		app.getJob(data[i].name, function(){});
 	},
 
 	syncError : function(error){
