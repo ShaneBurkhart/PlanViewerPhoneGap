@@ -1,7 +1,7 @@
 var app = app || {};
 
 app.Templates = {
-	tempNames : ["page_container", "list_item"],
+	tempNames : ["page_container", "list_item", "credentials"],
 	temps : {},
 	load : function(){
 		var baseUrl = "js/templates/",

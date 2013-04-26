@@ -119,10 +119,7 @@ app.Sync = {
 };
 
 document.addEventListener("deviceready", function(){
-	/*app.Templates.load();
+	app.Templates.load();
 	new app.Router(app);
-	Backbone.history.start();*/
-	app.Sync.getData("Shane", "kFj5agh4", function(data){
-		app.Dialog.alert(data);
-	});
+	Backbone.history.start();
 }, false);

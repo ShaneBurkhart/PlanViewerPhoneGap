@@ -3,7 +3,9 @@ var app = app || {};
 app.Router = Backbone.Router.extend({	
 	routes :{
 		"" : "showJobs",
-		":job" : "showPages"
+		//"" : "showCredentials",
+		":job" : "showPages",
+		"credentials" : "showCredentials"
 	},
 
 	initialize : function(app){
@@ -16,7 +18,10 @@ app.Router = Backbone.Router.extend({
 	},
 
 	showPages : function(job){
-		console.log(job);
 		this.RM.show(new app.PagesView({job : job}));
+	},
+
+	showCredentials : function(){
+		this.RM.show(new app.CredentialsView());
 	}
 });
