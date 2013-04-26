@@ -24,10 +24,7 @@ app.CredentialsView = Backbone.View.extend({
 		form.hide();
 		loading.show();
 		app.Sync.getData(u, p, function(data){
-			if(data)
-				console.log(data);
-			else
-				app.Dialog.alert("Username or password is incorrect.");
+			app.Dialog.alert("Test");
 		});
 	},
 
