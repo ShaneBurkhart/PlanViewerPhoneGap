@@ -114,8 +114,8 @@ app.Sync = {
 	},
 
 	update : function(data, success){
-		var d = JSON.parse(data);/*,
-			i = 0,
+		//var d = JSON.parse(data);,
+			/*i = 0,
 			callback = function(){
 				i++;
 				if(i < d.length)
@@ -123,7 +123,7 @@ app.Sync = {
 				else
 					success();
 			};*/
-		app.Dialog.alert("Foos");
+		app.Dialog.alert(data);
 		//app.getJob(d[i].name, callback);
 	},
 
