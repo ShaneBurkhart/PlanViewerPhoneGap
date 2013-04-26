@@ -114,16 +114,16 @@ app.Sync = {
 	},
 
 	update : function(data, success){
-		var d = JSON.parse(data),
-			i = 0/*,
+		/*var d = JSON.parse(data),
+			i = 0,
 			callback = function(){
 				i++;
 				if(i < d.length)
 					app.getJob(d[i].name, callback);
 				else
 					success();
-			}*/;
-		app.Dialog.alert(d);
+			};*/
+		app.Dialog.alert("Foo");
 		//app.getJob(d[i].name, callback);
 	},
 
