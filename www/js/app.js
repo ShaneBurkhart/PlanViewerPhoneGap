@@ -94,7 +94,12 @@ app.File = {
 };
 
 app.Sync = {
-	fileTransfer : new FileTransfer(),
+	fileTransfer : function(){
+		if(!this.fileTransferObject)
+			this.fileTransferObject = new FileTransfer();
+		return this.fileTransferObject;
+	},
+	fileTransferObject : undefined,
 	bound : 0,
 	hasConnection : function(){
 		var type = navigator.connection.type;
@@ -182,14 +187,14 @@ app.Sync = {
 					while(i < pages.length && pages[i].filename == "")
 						i++;
 					if(i < pages.length)
-						app.Sync.fileTransfer.download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
+						app.Sync.fileTransfer().download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
 					else
 						success();
 				};
 			while(i < pages.length && pages[i].filename == "")
 				i++;
 			if(pages.length > 0)
-				app.Sync.fileTransfer.download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
+				app.Sync.fileTransfer().download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
 			else
 				success();
 		};
