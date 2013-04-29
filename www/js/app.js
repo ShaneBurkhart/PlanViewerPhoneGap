@@ -166,7 +166,7 @@ app.Sync = {
 					success();
 			};
 		app.File.getJob(data[i].name, callback);*/
-		alert(success + "finished");
+		alert("finished");
 	},
 
 	syncError : function(error){
