@@ -51,6 +51,12 @@ app.File = {
 		});
 	},
 
+	deleteJob : function(job, success){
+		this.getJob(job, function(dir){
+			dir.removeRecursively(success, this.fileError);
+		});
+	},
+
 	getJobs : function(success){
 		this.getJobDir(function(folder){
 			folder.createReader().readEntries(function(entries){
@@ -113,16 +119,44 @@ app.Sync = {
 		});
 	},
 
+	getOutstanding : function(data, success){
+		app.File.getJobDir(function(folder){
+			folder.createReader().readEntries(function(entries){
+				var i = 0, j = 0, d = 1, 
+				outstanding = [];				
+			    for (i = 0 ; i < entries.length ; i ++) {
+			    	d = 1;
+			        for(j = 0 ; j < data.length ; j ++){
+			        	if(data[j].name == entries[i].name){
+			        		d = 0;
+			        		break;
+			        	}
+			        }
+			        if(d == 1)
+			        	outstanding.push(entries[i].name);
+			    }
+			    success(outstanding);
+			}, app.File.fileError);
+		});
+	},
+
 	update : function(data, success){
-		var i = 0,
-			callback = function(){
-				i++;
-				if(i < data.length)
-					app.File.getJob(data[i].name, callback);
-				else
-					success();
+			var getOutstandingCallback = function(out){
+				var i = 0,
+					recursiveCallback = function(){
+						i++;
+						if(i < out.length)
+							app.File.deleteJob(out[i], recursiveCallback);
+						else
+							app.Sync.syncJobs(data, success);
+				};
+				app.File.deleteJob(out[i], recursiveCallback);
 			};
-		app.File.getJob(data[i].name, callback);
+		app.File.getOutstanding(data, getOutstandingCallback);
+	},
+
+	syncJobs : function(data, success){
+		alert("Success");
 	},
 
 	syncError : function(error){
