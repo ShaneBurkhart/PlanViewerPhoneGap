@@ -122,6 +122,7 @@ app.Sync = {
 	getOutstanding : function(data, success){
 		app.File.getJobDir(function(folder){
 			folder.createReader().readEntries(function(entries){
+				app.Dialog.alert("Tester");
 				var i = 0, j = 0, d = 1, 
 				outstanding = [];				
 			    for (i = 0 ; i < entries.length ; i ++) {
@@ -152,7 +153,7 @@ app.Sync = {
 			};
 			app.File.deleteJob(out[i], recursiveCallback);
 		};
-		app.Dialog.alert("Test");//app.Sync.getOutstanding(data, getOutstandingCallback);
+		app.Sync.getOutstanding(data, getOutstandingCallback);
 	},
 
 	syncJobs : function(data, success){
