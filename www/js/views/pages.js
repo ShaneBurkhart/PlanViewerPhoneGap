@@ -36,7 +36,7 @@ app.PagesView = Backbone.View.extend({
 	render : function(){
 		this.$el.html(Mustache.render(app.Templates.get(this.container), {content : ""}));
 		var self = this;
-		//app.File.getJobs(self.renderAll);
+		app.File.getFiles(this.options.job, self.renderAll);
 		return this;
 	}
 });

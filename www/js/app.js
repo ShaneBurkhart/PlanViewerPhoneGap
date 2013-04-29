@@ -101,10 +101,10 @@ app.Sync = {
 	},
 
 	getData : function(username, password, success){
-		/*if(!this.hasConnection()){
+		if(!this.hasConnection()){
 			this.noConnectionError();
 			return;
-		}*/
+		}
 		if(!this.bound){
 			_.bindAll(this, "syncError");
 			this.bound = 1;
