@@ -193,7 +193,7 @@ app.Sync = {
 				};
 			while(i < pages.length && pages[i].filename == "")
 				i++;
-			if(pages.length > 0)
+			if(pages.length > 0 && i < pages.length)
 				app.Sync.fileTransfer().download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
 			else
 				success();
