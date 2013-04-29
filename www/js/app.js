@@ -152,7 +152,7 @@ app.Sync = {
 				};
 				app.File.deleteJob(out[i], recursiveCallback);
 			};
-		app.File.getOutstanding(data, getOutstandingCallback);
+		app.Sync.getOutstanding(data, getOutstandingCallback);
 	},
 
 	syncJobs : function(data, success){
