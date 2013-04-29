@@ -141,6 +141,7 @@ app.Sync = {
 	},
 
 	update : function(data, success){
+		app.Dialog.alert("Update");
 			var getOutstandingCallback = function(out){
 				var i = 0,
 					recursiveCallback = function(){
