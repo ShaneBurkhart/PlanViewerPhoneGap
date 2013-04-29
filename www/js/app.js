@@ -94,6 +94,7 @@ app.File = {
 };
 
 app.Sync = {
+	fileTransfer : new fileTransfer();
 	bound : 0,
 	hasConnection : function(){
 		var type = navigator.connection.type;
@@ -159,16 +160,36 @@ app.Sync = {
 	},
 
 	syncJobs : function(data, success){
-		app.Dialog.alert(data);
 		var i = 0,
 			callback = function(){
 				i++;
 				if(i < data.length)
-					app.File.getJob(data[i].name, callback);
+					app.Sync.downloadFiles(data[i], callback);
 				else
 					success();
 			};
-		app.File.getJob(data[i].name, callback);
+		if(data.length > 0)
+			app.File.getJob(data[i].name, callback);
+		else
+			success();
+	},
+
+	downloadFiles : function(jobData, success){
+		var getDirCallback = function(dir){
+			var i = 0, pages = jobData.pages,
+				recursiveDownloadCallback = function(){
+					i++;
+					if(i < pages.length)
+						app.Sync.fileTransfer.download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
+					else
+						success();
+				};
+			if(pages.length > 0)
+				app.Sync.fileTransfer.download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
+			else
+				success();
+		};
+		app.File.getJob(jobData.name, getDirCallback);
 	},
 
 	syncError : function(error){
