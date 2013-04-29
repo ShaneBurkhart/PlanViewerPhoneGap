@@ -156,7 +156,7 @@ app.Sync = {
 	},
 
 	syncJobs : function(data, success){
-		app.Dialog.alert(data);
+		/*app.Dialog.alert(data);
 		var i = 0,
 			callback = function(){
 				i++;
@@ -165,7 +165,8 @@ app.Sync = {
 				else
 					success();
 			};
-		app.File.getJob(data[i].name, callback);
+		app.File.getJob(data[i].name, callback);*/
+		success();
 	},
 
 	syncError : function(error){
