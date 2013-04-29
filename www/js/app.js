@@ -156,6 +156,7 @@ app.Sync = {
 	},
 
 	syncJobs : function(data, success){
+		app.Dialog.alert(data);
 		var i = 0,
 			callback = function(){
 				i++;
