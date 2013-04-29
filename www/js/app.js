@@ -114,15 +114,15 @@ app.Sync = {
 	},
 
 	update : function(data, success){
-		var i = 0;/*,
+		var i = 0,
 			callback = function(){
 				i++;
 				if(i < data.length)
 					app.getJob(data[i].name, callback);
 				else
 					success();
-			};*/
-		app.File.getJob(data[i].name, function(){success();});
+			};
+		app.File.getJob(data[i].name, callback);
 	},
 
 	syncError : function(error){
