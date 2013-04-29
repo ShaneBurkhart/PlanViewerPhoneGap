@@ -141,19 +141,18 @@ app.Sync = {
 	},
 
 	update : function(data, success){
-		app.Dialog.alert("Update");
-			var getOutstandingCallback = function(out){
-				var i = 0,
-					recursiveCallback = function(){
-						i++;
-						if(i < out.length)
-							app.File.deleteJob(out[i], recursiveCallback);
-						else
-							alert("SyncJob");//app.Sync.syncJobs(data, success);
-				};
-				app.File.deleteJob(out[i], recursiveCallback);
+		var getOutstandingCallback = function(out){
+			var i = 0,
+				recursiveCallback = function(){
+					i++;
+					if(i < out.length)
+						app.File.deleteJob(out[i], recursiveCallback);
+					else
+						alert("SyncJob");//app.Sync.syncJobs(data, success);
 			};
-		app.Sync.getOutstanding(data, getOutstandingCallback);
+			app.File.deleteJob(out[i], recursiveCallback);
+		};
+		app.Dialog.alert("Test");//app.Sync.getOutstanding(data, getOutstandingCallback);
 	},
 
 	syncJobs : function(data, success){
