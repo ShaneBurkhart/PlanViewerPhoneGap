@@ -94,7 +94,7 @@ app.File = {
 };
 
 app.Sync = {
-	fileTransfer : new fileTransfer(),
+	fileTransfer : new FileTransfer(),
 	bound : 0,
 	hasConnection : function(){
 		var type = navigator.connection.type;
