@@ -148,7 +148,7 @@ app.Sync = {
 						if(i < out.length)
 							app.File.deleteJob(out[i], recursiveCallback);
 						else
-							app.Sync.syncJobs(data, success);
+							alert("SyncJob");//app.Sync.syncJobs(data, success);
 				};
 				app.File.deleteJob(out[i], recursiveCallback);
 			};
