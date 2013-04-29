@@ -94,7 +94,7 @@ app.File = {
 };
 
 app.Sync = {
-	fileTransfer : new fileTransfer();
+	fileTransfer : new fileTransfer(),
 	bound : 0,
 	hasConnection : function(){
 		var type = navigator.connection.type;
@@ -179,11 +179,15 @@ app.Sync = {
 			var i = 0, pages = jobData.pages,
 				recursiveDownloadCallback = function(){
 					i++;
+					while(i < pages.length && pages[i].filename == "")
+						i++;
 					if(i < pages.length)
 						app.Sync.fileTransfer.download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
 					else
 						success();
 				};
+			while(i < pages.length && pages[i].filename == "")
+				i++;
 			if(pages.length > 0)
 				app.Sync.fileTransfer.download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
 			else
