@@ -122,7 +122,6 @@ app.Sync = {
 	getOutstanding : function(data, success){
 		app.File.getJobDir(function(folder){
 			folder.createReader().readEntries(function(entries){
-				app.Dialog.alert("Tester");
 				var i = 0, j = 0, d = 1, 
 				outstanding = [];				
 			    for (i = 0 ; i < entries.length ; i ++) {
@@ -136,6 +135,7 @@ app.Sync = {
 			        if(d == 1)
 			        	outstanding.push(entries[i].name);
 			    }
+			    app.Dialog.alert("Tester");
 			    success(outstanding);
 			}, app.File.fileError);
 		});
