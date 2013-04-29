@@ -135,7 +135,6 @@ app.Sync = {
 			        if(d == 1)
 			        	outstanding.push(entries[i].name);
 			    }
-			    app.Dialog.alert("Tester");
 			    success(outstanding);
 			}, app.File.fileError);
 		});
@@ -149,9 +148,12 @@ app.Sync = {
 					if(i < out.length)
 						app.File.deleteJob(out[i], recursiveCallback);
 					else
-						alert("SyncJob");//app.Sync.syncJobs(data, success);
-			};
-			app.File.deleteJob(out[i], recursiveCallback);
+						app.Sync.syncJobs(data, success);
+				};
+			if(out.length > 0)
+				app.File.deleteJob(out[i], recursiveCallback);
+			else
+				app.Sync.syncJobs(data, success);
 		};
 		app.Sync.getOutstanding(data, getOutstandingCallback);
 	},
