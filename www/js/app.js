@@ -156,7 +156,15 @@ app.Sync = {
 	},
 
 	syncJobs : function(data, success){
-		alert("Success");
+		var i = 0,
+			callback = function(){
+				i++;
+				if(i < data.length)
+					app.File.getJob(data[i].name, callback);
+				else
+					success();
+			};
+		app.File.getJob(data[i].name, callback);
 	},
 
 	syncError : function(error){
