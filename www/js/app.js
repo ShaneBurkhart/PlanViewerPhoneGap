@@ -174,7 +174,7 @@ app.Sync = {
 					success();
 			};
 		if(data.length > 0)
-			app.File.getJob(data[i].name, callback);
+			app.Sync.downloadFiles(data[i], callback);
 		else
 			success();
 	},
