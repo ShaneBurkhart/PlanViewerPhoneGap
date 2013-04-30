@@ -21,7 +21,7 @@ app.PagesView = Backbone.View.extend({
 			target =  target.parent();
 		var val = target.find("p").html();
 		var id = target.attr("id");
-		app.File.open(this.options.job, id);
+		app.File.open(this.options.job, val);
 	},
 
 	renderAll : function(files){

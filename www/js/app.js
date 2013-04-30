@@ -30,8 +30,11 @@ app.Dialog = {
 app.File = {
 	jobDir : "jobs",
 
-	open : function(job, fid){
-		app.Dialog.alert(job + " " + fid, function(){}, "openFile");
+	open : function(job, name){
+		app.File.getJob(job, function(dir){
+			var path = encodeURI(dir.fullPath + "/" + name);
+			var ref = window.open(path);
+		});
 	},
 
 	getDir : function(dir, success){ 
