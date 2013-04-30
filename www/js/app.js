@@ -35,6 +35,7 @@ app.File = {
 			app.Dialog.alert("Test");
 			var path = encodeURI(dir.fullPath + "/" + name);
 			var ref = window.open(path);
+			ref.addEventListener("loaderror", function(e){app.Dialog.alert(e);});
 		});
 	},
 
