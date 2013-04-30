@@ -32,6 +32,7 @@ app.File = {
 
 	open : function(job, name){
 		app.File.getJob(job, function(dir){
+			app.Dialog.alert("Test");
 			var path = encodeURI(dir.fullPath + "/" + name);
 			var ref = window.open(path);
 		});
