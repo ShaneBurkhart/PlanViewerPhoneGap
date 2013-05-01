@@ -9,8 +9,24 @@
         <title>Plan Viewer</title>
     </head>
     <body>
+        <!--Content container !-->
+        <div id="content"></div>
+
         <!-- Initial Loading Screen !-->
-        <h1>Loading...</h1>
+        <div id="loading" class="overlay hidden">
+            <div>
+                <h2 id="loading-msg">Loading...</h2>
+                <div class="progress">
+                    <div class="bar" id="loading-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="notfication" class="overlay hidden">
+            <div>
+                <h2 id="notification-msg"></h2>
+            </div>
+        </div>
         
         <!-- Libs !-->
         <script type="text/javascript" src="js/libs/jquery.min.js"></script>
@@ -31,8 +47,8 @@
         <script type="text/javascript" src="js/libs/underscore-min.js"></script>
         <script type="text/javascript" src="js/libs/backbone-min.js"></script>
         <script type="text/javascript" src="js/libs/mustache.js"></script>
-        <script type="text/javascript" src="phonegap.js"></script>
-        
+        <script type="text/javascript" src="cordova-2.6.0.js"></script>
+        <script type="text/javascript" src="fileopener.js"></script>
         <!-- Backbone.js stuff !-->
         <!-- Template Loader. (Synchronous)!-->
         <script type="text/javascript" src="js/loaders/template_loader.js"></script>
