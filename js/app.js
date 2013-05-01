@@ -59,7 +59,21 @@ app.Dialog = {
 app.File = {
 	jobDir : "jobs",
 
+	fileTransferObject : undefined,
+	fileTransfer : function(){
+		if(!this.fileTransferObject)
+			this.fileTransferObject = new FileTransfer();
+		return this.fileTransferObject;
+	},
+	reader : null,
+	getReader : function(){
+		if(!this.reader)
+			this.reader = new FileReader();
+		return this.reader;
+	},
+
 	open : function(job, name){
+		console.log(name);
 		if(window.device.platform == "iOS")
 			app.File.openiPhone(job, name);
 		else if(window.device.platform == "Android")
@@ -69,7 +83,6 @@ app.File = {
 	openAndroid : function(job, name){
 		app.File.getJob(job, function(dir){
 			var path = encodeURI(dir.fullPath + "/" + name);
-			console.log("This is where we do it");
 			window.plugins.fileOpener.open(path, function(error){app.Dialog.alert(error);});
 		});
 	},
@@ -94,9 +107,16 @@ app.File = {
 		});
 	},
 
-	deleteJob : function(job, success){
+	deleteFile : function(job, file, success){
 		this.getJob(job, function(dir){
-			dir.removeRecursively(success, app.Dialog.fileError);
+			dir.getFile(file, {create : false}, function(f){
+				f.remove(success, app.File.fileError);
+			}, app.File.fileError);
+		});
+	},
+	downloadFile : function(job, serverName, destName, success){
+		app.File.getJob(job, function(dir){
+			app.File.fileTransfer().download(encodeURI("http://theplanviewer.com/_files/" + serverName), dir.fullPath + "/" + destName,  success, this.syncError);
 		});
 	},
 
@@ -127,13 +147,13 @@ app.File = {
 		});
 	},
 
-	credFilename : "credentials.txt",
+	dataFilename : "data.txt",
 
-	getCredentials : function(success){
+	getData : function(success){
 		app.File.getJobDir(function(dir){
-			dir.getFile(app.File.credFilename, {create : true}, function(file){
+			dir.getFile(app.File.dataFilename, {create : true}, function(file){
 				file.file(function(f){
-					var reader = new FileReader();
+					var reader = app.File.getReader();
 			        reader.onloadend = function(evt){
 			            success(reader.result);
 			        };
@@ -143,15 +163,22 @@ app.File = {
 		});
 	},
 
-	saveCredentials : function(username, password){
-		var data = username + "\n" + password;
+	saveData : function(u, p, data){
 		app.File.getJobDir(function(dir){
-			dir.getFile(app.File.credFilename, {create: true}, function(file){
+			dir.getFile(app.File.dataFilename, {create: true}, function(file){
 				file.createWriter(function(writer){
-					writer.write(data);
+					writer.write(u + "\n" + p + "\n" + JSON.stringify(data));
 				});
 			}, app.File.fileError);
 		});
+	},
+
+	createName : function(id, filename){
+		var p = filename.split("\.");
+		if(p.length > 1)
+			return id + "." + p[p.length - 1];
+		else
+			return id;
 	},
 
 	fileError : function(error){
@@ -160,12 +187,6 @@ app.File = {
 };
 
 app.Sync = {
-	fileTransfer : function(){
-		if(!this.fileTransferObject)
-			this.fileTransferObject = new FileTransfer();
-		return this.fileTransferObject;
-	},
-	fileTransferObject : undefined,
 	bound : 0,
 	totalPages : 0,
 	currentPage : 0,
@@ -193,105 +214,141 @@ app.Sync = {
 		});
 	},
 
-	getOutstanding : function(data, success){
-		app.File.getJobDir(function(folder){
-			folder.createReader().readEntries(function(entries){
-				var i = 0, j = 0, d = 1, 
-				outstanding = [];				
-			    for (i = 0 ; i < entries.length ; i ++) {
-			    	d = 1;
-			        for(j = 0 ; j < data.length ; j ++){
-			        	if(data[j].name == entries[i].name){
-			        		d = 0;
-			        		break;
-			        	}
-			        }
-			        if(d == 1)
-			        	outstanding.push(entries[i].name);
-			    }
-			    success(outstanding);
+	setTotal : function(num){
+		this.currentPage = 0;
+		this.totalPages = num;
+	},
+
+	getRemovedFiles : function(data, prevData){
+		if(!prevData)
+			return [];
+		var dataFiles = app.Sync.convertJobsToFiles(data),
+			prevDataFiles = app.Sync.convertJobsToFiles(prevData),
+			remove = [];
+		var i = 0, j = 0, b = 1;
+		for(i = 0 ; i < prevDataFiles.length ; i ++){
+			b = 1;
+			for(j = 0 ; j < dataFiles.length ; j ++){
+				if(prevDataFiles[i].id == dataFiles[j].id)
+					b = 0;
+			}
+			if(b == 1)
+				remove.push(prevDataFiles[i]);
+		}
+		return remove;
+	},
+	getAddedFiles : function(data, prevData){
+		var add = [],
+			dataFiles = app.Sync.convertJobsToFiles(data);
+		if(prevData == null)
+			return dataFiles;
+		var i = 0, j = 0, b = 1,
+			prevDataFiles = app.Sync.convertJobsToFiles(prevData);
+		for(i = 0 ; i < dataFiles.length ; i ++){
+			b = 1;
+			for(j = 0 ; j < prevDataFiles.length ; j ++){
+				if(dataFiles[i].id == prevDataFiles[j].id){
+					if(dataFiles[i].version <= prevDataFiles[j].version)
+						b = 0;
+					break;
+				}
+			}
+			if(b == 1)
+				add.push(dataFiles[i]);
+		}
+		return add;
+	},
+	convertJobsToFiles : function(data){
+		var i = 0, j = 0, files = [];
+		for(i = 0 ; i < data.length ; i ++){
+			if(!data[i].pages)
+					continue;
+			for(j = 0 ; j < data[i].pages.length ; j ++){
+				if(data[i].pages[j].filename != "")
+					files.push({id : data[i].pages[j].id, job : data[i].name, filename : data[i].pages[j].filename, version : data[i].pages[j].version});
+			}
+		}
+		return files;
+	},
+	determineDelta : function(data, prevData){
+		return {
+			remove : app.Sync.getRemovedFiles(data, prevData),
+			add : app.Sync.getAddedFiles(data, prevData)
+		};
+	},
+	deleteFiles : function(files, success){
+		if(!files){
+			success();
+			return;
+		}
+		var i = 0,
+			recursiveCallback = function(){
+				app.Sync.incrementProgress();
+				i++;
+				if(i < files.length)
+					app.File.deleteFile(files[i].job, app.File.createName(files[i].id, files[i].filename), recursiveCallback);
+				else
+					success();
+			}
+		if(files.length > 0)
+			app.File.deleteFile(files[i].job, app.File.createName(files[i].id, files[i].filename), recursiveCallback);
+		else
+			success();
+	},
+	addFiles : function(files, success){
+		if(!files){
+			success();
+			return;
+		}
+		var i = 0,
+			recursiveCallback = function(){
+				app.Sync.incrementProgress();
+				i++;
+				if(i < files.length)
+					app.File.downloadFile(files[i].job, files[i].id, app.File.createName(files[i].id, files[i].filename), recursiveCallback);
+				else
+					success();
+			}
+		if(files.length > 0)
+			app.File.downloadFile(files[i].job, files[i].id, app.File.createName(files[i].id, files[i].filename), recursiveCallback);
+		else
+			success();
+	},
+	deleteEmpty : function(success){
+		app.File.getJobDir(function(dir){
+			dir.createReader().readEntries(function(entries){
+				var i = 0,
+					recursiveCallback = function(){
+						i++;
+						while(i < entries.length && !entries[i].isDirectory)
+							i++;
+						if(i < entries.length)
+							entries[i].remove(recursiveCallback, recursiveCallback);
+						else
+							success();
+					};
+				while(i < entries.length && !entries[i].isDirectory)
+					i++;
+				if(i < entries.length)
+					entries[i].remove(recursiveCallback, recursiveCallback);
+				else
+					success();
 			}, app.File.fileError);
 		});
 	},
-
-	setTotal : function(data){
-		this.currentPage = 0;
-		app.Dialog.Loading.setLoadingPercent(0);
-		var i = 0, t = 0, j = 0;
-		for(i = 0 ; i < data.length ; i ++){
-			for(j = 0 ; j < data[i].pages.length ; j ++)
-				t++;
-		}
-		this.totalPages = t;
-	},
-
-	update : function(data, success){
-		app.Sync.setTotal(data);
-		app.Dialog.Loading.setMessage("Downloading Files...");
-		app.Dialog.Loading.show();
-		var getOutstandingCallback = function(out){
-			var i = 0,
-				recursiveCallback = function(){
-					i++;
-					if(i < out.length)
-						app.File.deleteJob(out[i], recursiveCallback);
-					else
-						app.Sync.syncJobs(data, success);
-				};
-			if(out.length > 0)
-				app.File.deleteJob(out[i], recursiveCallback);
-			else
-				app.Sync.syncJobs(data, success);
-		};
-		app.Sync.getOutstanding(data, getOutstandingCallback);
-	},
-
-	syncJobs : function(data, success){
-		var i = 0,
-			callback = function(){
-				i++;
-				if(i < data.length)
-					app.Sync.downloadFiles(data[i], callback);
-				else
-					success();
-			};
-		if(data.length > 0)
-			app.Sync.downloadFiles(data[i], callback);
-		else
-			success();
+	update : function(data, prevData, success){
+		var delta = this.determineDelta(data, prevData);
+		app.Sync.setTotal(delta.add.length + delta.remove.length);
+		app.Sync.deleteFiles(delta.remove, function(){
+			app.Sync.addFiles(delta.add, function(){
+				app.Sync.deleteEmpty(success);
+			});
+		});
 	},
 
 	incrementProgress : function(){
 		this.currentPage++;
 		app.Dialog.Loading.setLoadingPercent(this.currentPage / this.totalPages);
-	},
-
-	downloadFiles : function(jobData, success){
-		var getDirCallback = function(dir){
-			var i = 0, pages = jobData.pages,
-				recursiveDownloadCallback = function(){
-					i++;
-					app.Sync.incrementProgress();
-					while(i < pages.length && pages[i].filename == ""){
-						i++;
-						app.Sync.incrementProgress();
-					}
-					console.log("Before");
-					if(i < pages.length)
-						app.Sync.fileTransfer().download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
-					else
-						success();
-				};
-			while(i < pages.length && pages[i].filename == ""){
-				i++;
-				app.Sync.incrementProgress();
-			}
-			if(pages.length > 0 && i < pages.length)
-				app.Sync.fileTransfer().download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
-			else
-				success();
-		};
-		app.File.getJob(jobData.name, getDirCallback);
 	},
 
 	syncError : function(error){

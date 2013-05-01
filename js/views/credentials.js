@@ -8,13 +8,13 @@ app.CredentialsView = Backbone.View.extend({
 
 	initialize : function(){
 		var self = this;
-		app.File.getCredentials(function(data){
+		app.File.getData(function(data){
 			if(!data){
 				self.renderForm();
 				return;
 			}
 			var creds = data.split("\n");
-			self.executeUpdate(creds[0], creds[1]);
+			self.executeUpdate(creds[0], creds[1], JSON.parse(creds[2]));
 		});
     },
 
@@ -22,18 +22,21 @@ app.CredentialsView = Backbone.View.extend({
 		"click #update-button" : "update"
 	},
 
-	executeUpdate : function(u, p){
+	executeUpdate : function(u, p, prevData){
+		app.Dialog.Loading.setMessage("Getting Data...");
+		app.Dialog.Loading.setLoadingPercent(0);
+		app.Dialog.Loading.show();
 		app.Sync.getData(u, p, function(data){
-			app.Dialog.Notification.hide();
 			if(!data){
 				app.Dialog.alert("Invalid username or password.");
 				return;
 			}
-			app.Sync.update(data, function(){
-				app.File.saveCredentials(u, p);
+			app.Sync.update(data, prevData, function(){
+				app.File.saveData(u, p, data);
 				app.Dialog.Loading.hide();
 				window.location.hash = "#";
-			});
+				app.Dialog.alert("Your files are now up to date!\nIt might take a minute for files to fully refresh.");
+			});	
 		});
 	},
 
@@ -44,7 +47,7 @@ app.CredentialsView = Backbone.View.extend({
 			u = "Shane",
 			p = "kFj5agh4";
 		password.val("");
-		this.executeUpdate(u, p);
+		this.executeUpdate(u, p, null);
 	},
 
 	renderForm : function(){
