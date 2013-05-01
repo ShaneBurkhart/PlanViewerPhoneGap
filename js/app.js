@@ -60,11 +60,22 @@ app.File = {
 	jobDir : "jobs",
 
 	open : function(job, name){
+		if(window.device.platform == "iOS")
+			app.File.openiPhone(job, name);
+		else if(window.device.platform == "Android")
+			app.File.openAndroid(job, name);
+	},
+
+	openAndroid : function(job, name){
 		app.File.getJob(job, function(dir){
 			var path = encodeURI(dir.fullPath + "/" + name);
 			console.log("This is where we do it");
 			window.plugins.fileOpener.open(path, function(error){app.Dialog.alert(error);});
 		});
+	},
+
+	openiPhone : function(job, name){
+		app.Dialog.alert("Opening Job: " + job + "  File: " + name);
 	},
 
 	getDir : function(dir, success){ 
@@ -144,7 +155,7 @@ app.File = {
 	},
 
 	fileError : function(error){
-		app.Dialog.alert("Sorry but the filesystem could not be accessed." + error.code);
+		app.Dialog.alert("Sorry but the filesystem could not be accessed.");
 	}
 };
 
@@ -265,6 +276,7 @@ app.Sync = {
 						i++;
 						app.Sync.incrementProgress();
 					}
+					console.log("Before");
 					if(i < pages.length)
 						app.Sync.fileTransfer().download(encodeURI("http://theplanviewer.com/_files/" + pages[i].id), dir.fullPath + "/" + pages[i].filename,  recursiveDownloadCallback, this.syncError);
 					else
@@ -283,8 +295,7 @@ app.Sync = {
 	},
 
 	syncError : function(error){
-		console.log("Fail");
-		app.Dialog.alert("Sorry but the server is not responding\n" + error.code);
+		app.Dialog.alert("Sorry but the server is not responding");
 	},
 
 	noConnectionError : function(){

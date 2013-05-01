@@ -30,9 +30,7 @@ app.CredentialsView = Backbone.View.extend({
 				return;
 			}
 			app.Sync.update(data, function(){
-				
 				app.File.saveCredentials(u, p);
-				console.log("After");
 				app.Dialog.Loading.hide();
 				window.location.hash = "#";
 			});

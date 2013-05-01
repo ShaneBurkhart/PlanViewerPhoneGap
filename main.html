@@ -30,20 +30,6 @@
         
         <!-- Libs !-->
         <script type="text/javascript" src="js/libs/jquery.min.js"></script>
-        <!-- Debug !-->
-        <script type="text/javascript">
-            window.onerror = function(msg, url, line){
-                var error = url + " : " + line + "<br>" + msg;
-                $.ajax({
-                    url : "http://theplanviewer.com/api/error",
-                    type : "post",
-                    dataType : "json",
-                    success : function(data){console.log("Error logged");},
-                    data : JSON.stringify({message : error})
-                });
-                return true;
-            };
-        </script>
         <script type="text/javascript" src="js/libs/underscore-min.js"></script>
         <script type="text/javascript" src="js/libs/backbone-min.js"></script>
         <script type="text/javascript" src="js/libs/mustache.js"></script>
