@@ -88,7 +88,9 @@ app.File = {
 	},
 
 	openiPhone : function(job, name){
-		app.Dialog.alert("Opening Job: " + job + "  File: " + name);
+        app.File.getJob(job, function(dir){
+            var ref = window.open(encodeURI(dir.fullPath + "/" + name), "_blank", "location=no");
+        });
 	},
 
 	getDir : function(dir, success){ 
